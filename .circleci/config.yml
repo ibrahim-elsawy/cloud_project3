@@ -109,7 +109,6 @@ jobs:
           name: run scan test
           command: |
             cd frontend
-          # npm audit fix --audit-level=critical --force
             npm audit fix --force
             npm audit --audit-level=critical
 
@@ -124,7 +123,6 @@ jobs:
           name: run scan test
           command: |
             cd backend
-          # npm audit fix --audit-level=critical --force
             npm audit fix --force
             npm audit --audit-level=critical
 
