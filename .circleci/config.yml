@@ -109,7 +109,8 @@ jobs:
           name: run scan test
           command: |
             cd frontend
-            npm audit fix --audit-level=critical --force
+          # npm audit fix --audit-level=critical --force
+            npm audit fix --force
             npm audit --audit-level=critical
 
   scan-backend:
@@ -123,7 +124,8 @@ jobs:
           name: run scan test
           command: |
             cd backend
-            npm audit fix --audit-level=critical --force
+          # npm audit fix --audit-level=critical --force
+            npm audit fix --force
             npm audit --audit-level=critical
 
   deploy-infrastructure:
