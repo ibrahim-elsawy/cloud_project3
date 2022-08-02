@@ -1,0 +1,36 @@
+---
+- name: "Creates backend dir"
+  file:
+    path: ~/backend_app
+    state: directory
+
+
+- name: "Copy compiled backend"
+  copy:
+    src: artifact.tar.gz
+    dest: "~/backend_app/artifact.tar.gz"
+
+
+- name: "extracting backend files"
+  shell: |
+    cd ~/backend_app
+    tar -xvzf artifact.tar.gz 
+    rm -rf artifact.tar.gz
+
+
+- name: "install dependencies"
+  shell: |
+    cd ~/backend_app
+    npm install
+
+
+- name: "starting the server"
+  shell: |
+    cd ~/backend_app
+    pm2 stop default
+    pm2 start npm -- start
+  register: server_logs
+
+- name: logs of the start server
+  debug:
+    msg: "{{ server_logs.stdout_lines }}"
