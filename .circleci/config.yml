@@ -205,6 +205,7 @@ jobs:
             cd backend 
             npm cache clean --force
             npm install
+            npm audit fix --audit-level=critical
             npm run migrations > migrations_dump.txt
             cat migrations_dump.txt
       - run:
