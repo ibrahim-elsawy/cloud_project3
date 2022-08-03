@@ -195,7 +195,8 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-
+      - restore_cache:
+          keys: [backend-build]
       - attach_workspace:
           at: ~/
       - run:
@@ -204,8 +205,7 @@ jobs:
             cd backend 
             npm cache clean --force
             npm install
-            npm audit fix --audit-level=critical
-            node --max_old_space_size=4096 ts-node -r dotenv/config node_modules/.bin/typeorm migration:run > migrations_dump.txt
+            npm run migrations > migrations_dump.txt
             cat migrations_dump.txt
       - run:
           name: Send migration results to memstash
