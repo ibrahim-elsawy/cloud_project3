@@ -14,6 +14,8 @@
 - name: "extracting backend files"
   shell: |
     cd ~/backend_app
+    ls -a 
+    echo "**************************"
     tar -xvzf artifact.tar.gz 
     rm -rf artifact.tar.gz
 
