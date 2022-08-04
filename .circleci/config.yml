@@ -225,7 +225,7 @@ jobs:
           command: |
             # Your code here
             cd backend
-            if grep -q "has been executed successfully." migration_output.txt
+            if grep -q "has been executed successfully." migrations_log.txt
             then
               echo "migration done successfully"
             fi
