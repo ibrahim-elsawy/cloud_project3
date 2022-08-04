@@ -274,31 +274,41 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/
+      - restore_cache:
+          keys: [backend-build]
       - add_ssh_keys:
           fingerprints: ["60:09:22:cc:81:86:3d:bd:0d:a8:a4:44:c9:73:12:e1"] # You can get this ID in the section where you registered the SSH Key
       - run:
+          name: add env to server
+          command: |
+            echo ENVIRONMENT=production > "backend/.env"
+            echo TYPEORM_CONNECTION=postgres >> "backend/.env"
+            echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts >> "backend/.env"
+            echo TYPEORM_MIGRATIONS=./src/migrations/*.ts >> "backend/.env"
+            echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> "backend/.env"
+            echo NODE_ENV=production >> "backend/.env"
+            echo TYPEORM_HOST=$TYPEORM_HOST >> "backend/.env"
+            echo TYPEORM_PORT=$TYPEORM_PORT >> "backend/.env"
+            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> "backend/.env"
+            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "backend/.env"
+            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"
+      - run:
           name: Install dependencies
           command: |
-            apk add --update ansible 
             apk add --update nodejs npm
+            apk add --update ansible 
+            apk add --no-cache curl
+            apk add --no-cache openssh-client
+            apk add --no-cache --upgrade bash
             pip install awscli
       - run:
           name: Deploy backend
           command: |
-            cd backend 
-            npm i 
-            npm run build 
-            cd .. 
-            tar -C backend -czvf artifact.tar.gz .circleci/ansible/roles/deploy/files
-            ls -a 
-            echo "*************** start"  
-            echo "**************************"
-            ls ~/project/.circleci/ansible/roles/deploy/files
-            echo " ******************************* finish"
-            cd .circleci/ansible 
-            echo "Contents  of the inventory.txt file is -------" 
-            cat inventory.txt 
-            ansible-playbook -i inventory.txt deploy-backend.yml
+            pwd
+            tar czf backend.tar.gz backend/
+            export ANSIBLE_HOST_KEY_CHECKING=false
+            cat ./.circleci/ansible/inventory.txt 
+            ansible-playbook -i ./.circleci/ansible/inventory.txt ./.circleci/ansible/deploy-backend.yml -vvv
       # Here's where you will add some code to rollback on failure  
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
