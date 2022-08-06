@@ -25,6 +25,7 @@
     ufw allow 3030/tcp
     pm2 stop default
     pm2 start npm -- start
+    nmap localhost
   register: server_logs
 
 - name: logs of the start server
