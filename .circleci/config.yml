@@ -19,24 +19,18 @@ commands:
             aws cloudformation delete-stack --stack-name udapeople-frontend-<<parameters.workflow_id>>
 
   revert-migrations:
-    description: Revert the last migration if successfully run in the current workflow.
+    description: revert the last migration 
     parameters:
-      workflowID:
+      workflow-id:
         type: string      
     steps:
       - run:
           name: Revert migrations
           when: on_fail
           command: |
-            # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            SUCCESS=$(curl -H "token: 7079126b-54c1-4ae1-b7cf-577d8a27c76f" --request GET https://api.memstash.io/values/DB_MIGRATION_STATUS_<< parameters.workflowID >>)
-            echo $SUCCESS
-            if(( "$SUCCESS"=="success" )); 
-            then
-              cd ./backend
-              npm install
-              npm run migrations:revert
-            fi
+            cd ./backend
+            npm install
+            npm run migrations:revert
             
 jobs:
   build-frontend:
@@ -333,6 +327,8 @@ jobs:
       - run:
           name: Install dependencies
           command: |
+            apk add --update nodejs npm
+            apk add --no-cache curl
             pip install awscli
       - run:
           name: add env to server
