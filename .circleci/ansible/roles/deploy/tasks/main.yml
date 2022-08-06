@@ -22,6 +22,7 @@
   become: true
   shell: |
     cd ~/backend
+    ufw allow 3030/tcp
     pm2 stop default
     pm2 start npm -- start
   register: server_logs

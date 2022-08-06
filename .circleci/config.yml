@@ -28,6 +28,7 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
+            echo $IS_MIGRATIONS
             if(( "$IS_MIGRATIONS"=="1" )); 
             then
               cd ./backend
@@ -218,6 +219,7 @@ jobs:
             ls -a 
             cd ./backend
             npm run migrations > migrations_log.txt
+            cat migrations_log.txt
 
       - run:
           name: Send migration results to memstash
