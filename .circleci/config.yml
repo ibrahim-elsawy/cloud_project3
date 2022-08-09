@@ -311,6 +311,9 @@ jobs:
           name: Deploy backend
           command: |
             pwd
+            cd backend
+            npm i 
+            npm run build
             tar czf backend.tar.gz backend/
             export ANSIBLE_HOST_KEY_CHECKING=false
             cat ./.circleci/ansible/inventory.txt 
