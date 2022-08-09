@@ -159,6 +159,11 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/backend/.env
+            - project/backend/
       # Here's where you will add some code to rollback on failure      
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
@@ -187,6 +192,11 @@ jobs:
             echo "************"
             ansible-playbook -i inventory.txt configure-server.yml
       # Here's where you will add some code to rollback on failure
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/backend/.env
+            - project/backend/
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"      
 
@@ -233,6 +243,11 @@ jobs:
               $IS_MIGRATIONS=1
               echo $IS_MIGRATIONS
             fi
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/backend/.env
+            - project/backend/
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
 
@@ -298,12 +313,7 @@ jobs:
             echo TYPEORM_HOST=$TYPEORM_HOST >> "backend/.env"
             echo TYPEORM_PORT=$TYPEORM_PORT >> "backend/.env"
             echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> "backend/.env"
-            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "backend/.env"
-            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update nodejs npm
+                  apk add --update nodejs npm
             apk add --update ansible 
             apk add --no-cache curl
             apk add --no-cache openssh-client
@@ -318,6 +328,11 @@ jobs:
             cat ./.circleci/ansible/inventory.txt 
             ansible-playbook -i ./.circleci/ansible/inventory.txt ./.circleci/ansible/deploy-backend.yml -vvv
       # Here's where you will add some code to rollback on failure  
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/backend/.env
+            - project/backend/
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
 
@@ -366,7 +381,7 @@ jobs:
             then 
               return 0 
             else 
-              return 0
+              return 1
             fi
       - run:
           name: Frontend smoke test.
@@ -375,10 +390,14 @@ jobs:
             echo ${URL} 
             if curl -s ${URL} | grep "Welcome" 
             then 
-              return 0
+              return 1
             else 
-              return 0 
+              return 1 
             fi
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/backend/.env
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
       - revert-migrations:
