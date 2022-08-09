@@ -407,6 +407,8 @@ jobs:
               --no-paginate --output text)
             echo "OLD_WORKFLOW_ID=$OLD_WORKFLOW_ID"
             echo $OLD_WORKFLOW_ID > OldWorkflowID
+            ls -a
+            cat OldWorkflowID
       - run:
           name: Update cloudfront distribution
           command: |
