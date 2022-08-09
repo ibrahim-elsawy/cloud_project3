@@ -159,11 +159,7 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/backend/.env
-            - project/backend/
+
       # Here's where you will add some code to rollback on failure      
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
@@ -192,11 +188,7 @@ jobs:
             echo "************"
             ansible-playbook -i inventory.txt configure-server.yml
       # Here's where you will add some code to rollback on failure
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/backend/.env
-            - project/backend/
+
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"      
 
@@ -243,11 +235,7 @@ jobs:
               $IS_MIGRATIONS=1
               echo $IS_MIGRATIONS
             fi
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/backend/.env
-            - project/backend/
+
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
 
@@ -328,11 +316,7 @@ jobs:
             cat ./.circleci/ansible/inventory.txt 
             ansible-playbook -i ./.circleci/ansible/inventory.txt ./.circleci/ansible/deploy-backend.yml -vvv
       # Here's where you will add some code to rollback on failure  
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/backend/.env
-            - project/backend/
+
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
 
@@ -394,10 +378,7 @@ jobs:
             else 
               return 1 
             fi
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/backend/.env
+
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
       - revert-migrations:
