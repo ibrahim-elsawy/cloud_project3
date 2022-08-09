@@ -417,6 +417,10 @@ jobs:
               --tags project=udapeople \
               --stack-name "udapeople-cloudfront-production" \
               --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}"
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/OldWorkflowID
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - revert-migrations:
