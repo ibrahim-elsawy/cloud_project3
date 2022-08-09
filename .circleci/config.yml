@@ -314,7 +314,7 @@ jobs:
             cd backend
             npm i 
             npm run build
-            tar czf backend.tar.gz backend/
+            tar czf backend.tar.gz .
             export ANSIBLE_HOST_KEY_CHECKING=false
             cat ./.circleci/ansible/inventory.txt 
             ansible-playbook -i ./.circleci/ansible/inventory.txt ./.circleci/ansible/deploy-backend.yml -vvv
