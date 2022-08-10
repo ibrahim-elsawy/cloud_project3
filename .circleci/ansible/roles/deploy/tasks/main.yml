@@ -1,9 +1,5 @@
 ---
 
-- name: upgrade npm
-  become: true
-  shell: |
-    npm install -g npm@latest
 
 - name: add env var in bashrc 
   become: true
