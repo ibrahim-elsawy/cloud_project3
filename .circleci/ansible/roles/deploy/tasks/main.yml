@@ -26,9 +26,9 @@
 - name: "Copy .env file to dist"
   become: true
   copy:
-    src: ~/.env
-    remote_src: true
-    dest: ~/dist/
+    src: /home/ubuntu/.env
+    remote_src: yes
+    dest: home/ubuntu/dist/
 
 - name: install dependencies
   ignore_errors: yes
