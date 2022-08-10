@@ -25,6 +25,11 @@
     src: /root/project/backend/backend.tar.gz
     dest: /home/ubuntu/
 
+- name: "Copy .env file to dist"
+  unarchive:
+    src: ~/.env
+    dest: ~/dist/
+
 - name: install dependencies
   ignore_errors: yes
   shell: |
