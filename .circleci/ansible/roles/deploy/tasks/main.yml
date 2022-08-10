@@ -22,15 +22,15 @@
   become: true
   shell: |
     cd ~/backend
-    TYPEORM_CONNECTION=postgres
-    TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts
-    TYPEORM_HOST=database-2.c0eyxof0kjwt.us-east-1.rds.amazonaws.com
-    TYPEORM_PORT = 5432
-    TYPEORM_USERNAME=postgres
-    TYPEORM_PASSWORD=sawy4507
-    TYPEORM_DATABASE=postgres
-    TYPEORM_MIGRATIONS=./src/migrations/*.ts
-    TYPEORM_MIGRATIONS_DIR=./src/migrations
+    echo TYPEORM_CONNECTION=postgres >> ~/.bashrc
+    echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts >> ~/.bashrc
+    echo TYPEORM_HOST=database-2.c0eyxof0kjwt.us-east-1.rds.amazonaws.com >> ~/.bashrc
+    echo TYPEORM_PORT = 5432 >> ~/.bashrc
+    echo TYPEORM_USERNAME=postgres >> ~/.bashrc
+    echo TYPEORM_PASSWORD=sawy4507 >> ~/.bashrc
+    echo TYPEORM_DATABASE=postgres >> ~/.bashrc
+    echo TYPEORM_MIGRATIONS=./src/migrations/*.ts >> ~/.bashrc
+    echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> ~/.bashrc
     ufw allow 3030/tcp
     pm2 stop default
     pm2 start npm -- start
