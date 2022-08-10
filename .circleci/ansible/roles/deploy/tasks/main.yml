@@ -27,7 +27,7 @@
   become: true
   copy:
     src: ~/.env
-    remote_src: yes
+    remote_src: true
     dest: ~/dist/
 
 - name: install dependencies
