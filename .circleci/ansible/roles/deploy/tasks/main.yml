@@ -6,6 +6,7 @@
     npm install -g npm@latest
 
 - name: add env var in bashrc 
+  become: true
   ansible.builtin.blockinfile:
     path: ~/.bashrc
     block: |
@@ -26,7 +27,8 @@
     dest: /home/ubuntu/
 
 - name: "Copy .env file to dist"
-  unarchive:
+  become: true
+  copy:
     src: ~/.env
     dest: ~/dist/
 
