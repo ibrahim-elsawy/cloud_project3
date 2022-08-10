@@ -1,6 +1,7 @@
 ---
 
 
+
 - name: add env var in bashrc 
   become: true
   ansible.builtin.blockinfile:
