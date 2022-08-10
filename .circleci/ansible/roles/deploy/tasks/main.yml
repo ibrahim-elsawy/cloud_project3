@@ -22,15 +22,15 @@
   become: true
   shell: |
     cd ~/backend
-    echo TYPEORM_CONNECTION=postgres >> ~/.bashrc
-    echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts >> ~/.bashrc
-    echo TYPEORM_HOST=database-2.c0eyxof0kjwt.us-east-1.rds.amazonaws.com >> ~/.bashrc
-    echo TYPEORM_PORT = 5432 >> ~/.bashrc
-    echo TYPEORM_USERNAME=postgres >> ~/.bashrc
-    echo TYPEORM_PASSWORD=sawy4507 >> ~/.bashrc
-    echo TYPEORM_DATABASE=postgres >> ~/.bashrc
-    echo TYPEORM_MIGRATIONS=./src/migrations/*.ts >> ~/.bashrc
-    echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> ~/.bashrc
+    echo "export TYPEORM_CONNECTION=postgres" >> ~/.bashrc
+    echo "export TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts" >> ~/.bashrc
+    echo "export TYPEORM_HOST=database-2.c0eyxof0kjwt.us-east-1.rds.amazonaws.com" >> ~/.bashrc
+    echo "export TYPEORM_PORT = 5432" >> ~/.bashrc
+    echo "export TYPEORM_USERNAME=postgres" >> ~/.bashrc
+    echo "export TYPEORM_PASSWORD=sawy4507" >> ~/.bashrc
+    echo "export TYPEORM_DATABASE=postgres" >> ~/.bashrc
+    echo "export TYPEORM_MIGRATIONS=./src/migrations/*.ts" >> ~/.bashrc
+    echo "export TYPEORM_MIGRATIONS_DIR=./src/migrations" >> ~/.bashrc
     ufw allow 3030/tcp
     pm2 stop default
     pm2 start npm -- start
