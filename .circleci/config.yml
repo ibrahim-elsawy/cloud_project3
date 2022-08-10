@@ -28,8 +28,8 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            echo $IS_MIGRATIONS
-            if(( "$IS_MIGRATIONS"=="1" )); 
+            SUCCESS=$(curl -H "token: e52b52de-ee26-41a5-86e8-e8dcc3d995a5" --request GET https://api.memstash.io/values/migration_<< parameters.workflow_id >>)
+            if(( "$SUCCESS == "1" )); 
             then
               cd ./backend
               npm install
@@ -230,10 +230,8 @@ jobs:
             cd backend
             if grep -q "has been executed successfully." migrations_log.txt
             then
-              echo $IS_MIGRATIONS
+              curl -H "Content-Type: text/plain" -H "token: 7933fe63-4687-4fa1-8426-aa25aa1730ec" --request PUT --data "1" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
               echo "migration done successfully"
-              $IS_MIGRATIONS=1
-              echo $IS_MIGRATIONS
             fi
 
       - destroy-environment:
@@ -321,10 +319,10 @@ jobs:
             cd ..
             cat ./.circleci/ansible/inventory.txt 
             ansible-playbook -i ./.circleci/ansible/inventory.txt ./.circleci/ansible/deploy-backend.yml -vvv
-      # Here's where you will add some code to rollback on failure  
+      Here's where you will add some code to rollback on failure  
 
-      # - destroy-environment:
-      #     workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
+      - destroy-environment:
+          workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
 
 
   smoke-test:
@@ -385,10 +383,10 @@ jobs:
               return 1 
             fi
 
-      # - destroy-environment:
-      #     workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
-      # - revert-migrations:
-      #     workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
+      - destroy-environment:
+          workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
+      - revert-migrations:
+          workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
 
 
   cloudfront-update:
@@ -496,7 +494,7 @@ workflows:
           requires: [run-migrations]
       - smoke-test:
           requires: [deploy-backend, deploy-frontend]
-      # - cloudfront-update:
-      #     requires: [smoke-test]
-      # - cleanup:
-      #     requires: [cloudfront-update]
+      - cloudfront-update:
+          requires: [smoke-test]
+      - cleanup:
+          requires: [cloudfront-update]
