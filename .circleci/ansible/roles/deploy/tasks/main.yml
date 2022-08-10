@@ -29,7 +29,8 @@
 - name: "Copy .env file to dist"
   become: true
   copy:
-    remote_src: ~/.env
+    src: ~/.env
+    remote_src: yes
     dest: ~/dist/
 
 - name: install dependencies
