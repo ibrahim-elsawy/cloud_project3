@@ -18,10 +18,10 @@
     npm i
     npm run build
 
-- name: install dependencies
-  ignore_errors: yes
+- name: "starting the server"
+  become: true
   shell: |
-    cd /home/ubuntu/backend
+    cd ~/backend
     export TYPEORM_CONNECTION=postgres
     export TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts
     export TYPEORM_HOST=database-2.c0eyxof0kjwt.us-east-1.rds.amazonaws.com
@@ -31,11 +31,6 @@
     export TYPEORM_DATABASE=postgres
     export TYPEORM_MIGRATIONS=./src/migrations/*.ts
     export TYPEORM_MIGRATIONS_DIR=./src/migrations
-
-- name: "starting the server"
-  become: true
-  shell: |
-    cd ~/backend
     ufw allow 3030/tcp
     pm2 stop default
     pm2 start npm -- start
